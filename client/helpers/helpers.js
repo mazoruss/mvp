@@ -3,6 +3,7 @@ var cardImgSrc = {};
 allCards.forEach(card => {
 	cardImgSrc[card] = `cards/${card}.gif`;
 });
+cardImgSrc['b'] = `cards/${'b'}.gif`;
 
 var isBust = function(cards) {
 	var total = 0;
@@ -15,6 +16,37 @@ var isBust = function(cards) {
 			total += Number(card[0]);
 		}
 	})
-
 	return total > 21;
 }
+
+var points = function(cards) {
+	var ace = false;
+	var total = 0;
+	cards.forEach(card => {
+		if(card[0] === 'a') {
+			ace = true;
+			total += 1;
+		} else if (isNaN(card[0])) {
+			total += 10;
+		} else {
+			total += Number(card[0]);
+		}
+	})
+	if(ace && total + 10 < 22) {
+		total += 10;
+	}
+	return total;
+}
+
+var defaultState = function() {
+	var deck = new Deck();
+	return {
+			deck: deck,
+			playerCards: [],
+			dealerCards: [],
+			busted: false,
+			reveal: false,
+			winner: ''
+		};
+}
+

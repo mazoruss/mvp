@@ -20,6 +20,7 @@ var isBust = function(cards) {
 }
 
 var points = function(cards) {
+	if(!cards) { return; }
 	var ace = false;
 	var total = 0;
 	cards.forEach(card => {
@@ -46,7 +47,8 @@ var defaultState = function() {
 			dealerCards: [],
 			busted: false,
 			reveal: false,
-			winner: ''
+			winner: '',
+			bet: 5
 		};
 }
 

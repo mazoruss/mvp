@@ -1,0 +1,75 @@
+body {
+	background-color: black;
+}
+
+#app {
+	width: 920px;
+}
+
+.table {
+	background-image: url('../cards/table.png');
+	height: 461px;
+	width: 917px;
+}
+
+.titleImage {
+	height: auto;
+	width: 217px;
+	left: 350px;
+	position: relative;
+}
+
+.player {
+	top: 200px;
+	left: 400px;
+	position: relative;
+	height: 100px;
+}
+
+.dealer {
+	top: 80px;
+	left: 400px;
+	position: relative;
+	height: 100px;
+}
+
+.playerCard {
+	margin-right: -50px;
+}
+
+.dealerCard {
+	margin-right: -50px;
+}
+
+.result {
+	font-size: 40px;
+	color: red;
+	text-align: center;
+	position: relative;
+	height: 50px;
+}
+
+.leftButtons {
+	position:relative ;
+	top: 130px;
+	float: left;
+	margin-left: 60px;
+	color: white;
+	font-size: 20px;
+}
+
+.rightButtons {
+	position:relative;
+	top: 130px;
+	float: right;
+	margin-right: 60px;
+	color: white;
+	font-size: 20px;
+	width:80px;
+}
+
+.wallet {
+	float: right;
+	color: white;
+	font-size: 20px;
+}

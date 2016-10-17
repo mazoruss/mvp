@@ -21,34 +21,48 @@ class App extends React.Component {
 	}
 
 	keep() {
+		// if game is over, the keep button becomes deal!
 		if (this.state.reveal) {
 			this.start(true);
 		} else {
+			//ends the round by revealing the face down card
 			this.setState({reveal: true});
+			//animate to slow down the dealer's animation
+			let animate = [];
 			let cards = this.state.dealerCards.slice();
+			//dealer draws when points is below 17
 			while(points(cards) < 17) {
 				cards.push(this.state.deck.draw());
-				this.setState({ dealerCards: cards });
+				animate.push(() => this.setState({ dealerCards: cards }).bind(this));
 			}
+			//if dealer busts, or points is less than player, player wins
 			if (points(cards) > 21 || points(cards) < points(this.state.playerCards)) {
-				this.setState({winner: 'PLAYER', money: this.state.money + this.state.bet});
+				animate.push( () => this.setState({winner: 'PLAYER', money: this.state.money + this.state.bet}).bind(this) );
 			} else {
-				this.setState({winner: 'DEALER', money: this.state.money - this.state.bet});
+			//otherwise player wins
+				animate.push( () => this.setState({winner: 'DEALER', money: this.state.money - this.state.bet}).bind(this) );
 			}
+			//animate for dealer
+			animate.forEach((func, i) => {
+				setTimeout(func, (i + 1) * 500);
+			})
+
 		}
 	}
 
-
+	// dealer draws card
 	dealerDraw() {
 		let cards = this.state.dealerCards.slice();
 		cards.push(this.state.deck.draw());
 		this.setState({ dealerCards: cards });
 	}
 
+	//shuffles the deck
 	reset() {
 		this.setState(defaultState());
 	}
 
+	//deals hands to begin the game
 	start(bool) {
 		if(this.state.playerCards.length === 0 || bool) {
 			this.setState({ reveal: false, playerCards: [], dealerCards: [], busted: false, winner: ''});
@@ -57,6 +71,12 @@ class App extends React.Component {
 			setTimeout(this.hitMe.bind(this), 750);
 			setTimeout(this.hitMe.bind(this), 1000);
 		}
+	}
+
+	updateBet(amount) {
+		this.setState({
+			bet: amount
+		});
 	}
 
 	render() {
@@ -79,13 +99,22 @@ class App extends React.Component {
 
 						<div className='rightButtons'>
 							<span onClick={this.hitMe.bind(this)}>Hit Me</span> <br/>
-							<span onClick={this.keep.bind(this)}>{this.state.reveal ? 'Next Hand' : 'Keep'}</span>	
+							<span onClick={this.keep.bind(this)}>{this.state.reveal ? 'Deal!' : 'Keep'}</span>	
 						</div>
 					</div>
 
 					<div className='bets'>
 						<span className='wallet'>Wallet: ${this.state.money} </span>
-						<span className='bet'>Bet: {this.state.bet}</span><br />
+						<span className='bet'>Bet: {this.state.bet}</span>
+					</div>
+
+					<div className='allBets'>
+						<div className='bet5' onClick={() => this.updateBet(5).bind(this)}>5</div>
+						<div className='bet10' onClick={() => this.updateBet(10).bind(this)}>10</div>
+						<div className='bet25' onClick={() => this.updateBet(25).bind(this)}>25</div>
+						<div className='bet50' onClick={() => this.updateBet(50).bind(this)}>50</div>
+						<div className='bet100' onClick={() => this.updateBet(100).bind(this)}>100</div>
+						<div className='bet200' onClick={() => this.updateBet(200).bind(this)}>200</div>
 					</div>
 				</div>
 				<div className='info'>

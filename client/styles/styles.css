@@ -69,7 +69,21 @@ body {
 }
 
 .wallet {
-	float: right;
 	color: white;
 	font-size: 20px;
+	float: right;
+}
+
+.bet {
+	color: white;
+	float: right;
+}
+
+.allBets * {
+	color: white;
+	margin: 15px;
+	float: left;
+	border-width: 10px;
+	border-color: white;
+	border-radius: 5px;
 }

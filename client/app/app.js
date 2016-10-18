@@ -42,6 +42,8 @@ class App extends React.Component {
 			//otherwise dealer wins
 				animate.push( () => this.setState({winner: 'DEALER', money: this.state.money - this.state.bet}) );
 			}
+
+
 			//animate for dealer
 			animate.forEach((func, i) => {
 				setTimeout(func, (i + 1) * 500);
@@ -74,7 +76,6 @@ class App extends React.Component {
 	}
 
 	checkBlackJack() {
-		console.log(points(this.state.playerCards));
 		if (points(this.state.playerCards) === 21) {
 			this.setState({winner: 'PLAYER', money: this.state.money + (this.state.bet * 1.5), reveal: true});
 		}
@@ -107,13 +108,14 @@ class App extends React.Component {
 						<Result bust={this.state.busted} winner={this.state.winner} />
 
 						<div className='leftButtons'>
-							<span onClick={this.start.bind(this)}>Start</span> <br/>
 							<span onClick={this.reset.bind(this)}>Shuffle</span>
 						</div>
 
 						<div className='rightButtons'>
 							<span onClick={this.hitMe.bind(this)}>Hit Me</span> <br/>
-							<span onClick={this.keep.bind(this)}>{this.state.reveal ? 'Deal!' : 'Keep'}</span>	
+							<span onClick={this.keep.bind(this)}>
+								{this.state.reveal || this.state.playerCards.length === 0 ? 'Deal!' : 'Keep'}
+							</span>	
 						</div>
 					</div>
 
@@ -124,12 +126,13 @@ class App extends React.Component {
 					</div>
 
 					<div className='allBets'>
-						<div className='bet5' onClick={() => this.updateBet(5).bind(this)}>5</div>
-						<div className='bet10' onClick={() => this.updateBet(10).bind(this)}>10</div>
-						<div className='bet25' onClick={() => this.updateBet(25).bind(this)}>25</div>
-						<div className='bet50' onClick={() => this.updateBet(50).bind(this)}>50</div>
-						<div className='bet100' onClick={() => this.updateBet(100).bind(this)}>100</div>
-						<div className='bet200' onClick={() => this.updateBet(200).bind(this)}>200</div>
+						<div className='bet2' onClick={() => this.updateBet(2)}>2</div>
+						<div className='bet5' onClick={() => this.updateBet(5)}>5</div>
+						<div className='bet10' onClick={() => this.updateBet(10)}>10</div>
+						<div className='bet25' onClick={() => this.updateBet(25)}>25</div>
+						<div className='bet50' onClick={() => this.updateBet(50)}>50</div>
+						<div className='bet100' onClick={() => this.updateBet(100)}>100</div>
+						<div className='bet200' onClick={() => this.updateBet(200)}>200</div>
 					</div>
 				</div>
 

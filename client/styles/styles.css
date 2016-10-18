@@ -117,6 +117,10 @@ div {
 	top: 30px;
 }
 
+.percentage {
+	top: 52px;
+}
+
 .wall {
 	top: 90px;
 	position: absolute;

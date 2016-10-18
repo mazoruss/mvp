@@ -104,6 +104,7 @@ class App extends React.Component {
 				<div className='info'>
 					<div className='cardsLeft'> Cards left: {this.state.deck.cardsLeft()}</div>
 					<div className='count'> The Count: {this.state.deck.count()}</div>
+					<div className='percentage'> The Edge: {this.state.deck.percentage() + '%'}</div>
 				</div>
 
 				<div className='display'>

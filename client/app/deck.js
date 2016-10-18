@@ -47,3 +47,7 @@ Deck.prototype.smallLeft = function() {
 Deck.prototype.count = function() {
   return this.face - this.small;
 }
+
+Deck.prototype.percentage = function() {
+  return 49.5 + (this.count() * 0.5);
+}

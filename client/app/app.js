@@ -33,7 +33,8 @@ class App extends React.Component {
 			//dealer draws when points is below 17
 			while(points(cards) < 17) {
 				cards.push(this.state.deck.draw());
-				animate.push(() => this.setState({ dealerCards: cards }));
+				let hand = cards.slice();
+				animate.push(() => this.setState({ dealerCards: hand }));
 			}
 			//if dealer busts, or points is less than player, player wins
 			if (points(cards) > 21 || points(cards) < points(this.state.playerCards)) {

@@ -22,7 +22,7 @@ class App extends React.Component {
 
 	keep() {
 		// if game is over, the keep button becomes deal!
-		if (this.state.reveal) {
+		if (this.state.reveal || this.state.playerCards.length === 0) {
 			this.start(true);
 		} else {
 			//ends the round by revealing the face down card
@@ -33,20 +33,19 @@ class App extends React.Component {
 			//dealer draws when points is below 17
 			while(points(cards) < 17) {
 				cards.push(this.state.deck.draw());
-				animate.push(() => this.setState({ dealerCards: cards }).bind(this));
+				animate.push(() => this.setState({ dealerCards: cards }));
 			}
 			//if dealer busts, or points is less than player, player wins
 			if (points(cards) > 21 || points(cards) < points(this.state.playerCards)) {
-				animate.push( () => this.setState({winner: 'PLAYER', money: this.state.money + this.state.bet}).bind(this) );
+				animate.push( () => this.setState({winner: 'PLAYER', money: this.state.money + this.state.bet}) );
 			} else {
-			//otherwise player wins
-				animate.push( () => this.setState({winner: 'DEALER', money: this.state.money - this.state.bet}).bind(this) );
+			//otherwise dealer wins
+				animate.push( () => this.setState({winner: 'DEALER', money: this.state.money - this.state.bet}) );
 			}
 			//animate for dealer
 			animate.forEach((func, i) => {
 				setTimeout(func, (i + 1) * 500);
 			})
-
 		}
 	}
 
@@ -70,18 +69,33 @@ class App extends React.Component {
 			setTimeout(this.dealerDraw.bind(this), 500);
 			setTimeout(this.hitMe.bind(this), 750);
 			setTimeout(this.hitMe.bind(this), 1000);
+			setTimeout(this.checkBlackJack.bind(this), 1250);
+		}
+	}
+
+	checkBlackJack() {
+		console.log(points(this.state.playerCards));
+		if (points(this.state.playerCards) === 21) {
+			this.setState({winner: 'PLAYER', money: this.state.money + (this.state.bet * 1.5), reveal: true});
 		}
 	}
 
 	updateBet(amount) {
-		this.setState({
-			bet: amount
-		});
+		if(this.state.reveal || this.state.playerCards.length === 0) {
+			this.setState({
+				bet: amount
+			});
+		}
 	}
 
 	render() {
 		return (
 			<div>
+				<div className='info'>
+					<div className='cardsLeft'> Cards left: {this.state.deck.cardsLeft()}</div>
+					<div className='count'> The Count: {this.state.deck.count()}</div>
+				</div>
+
 				<div className='game'>
 					<div className='title'>
 						<img src='cards/title.png' className='titleImage' />
@@ -104,8 +118,9 @@ class App extends React.Component {
 					</div>
 
 					<div className='bets'>
+						<span className='bet'>Bet: ${this.state.bet}</span> <br />
 						<span className='wallet'>Wallet: ${this.state.money} </span>
-						<span className='bet'>Bet: {this.state.bet}</span>
+						
 					</div>
 
 					<div className='allBets'>
@@ -117,8 +132,9 @@ class App extends React.Component {
 						<div className='bet200' onClick={() => this.updateBet(200).bind(this)}>200</div>
 					</div>
 				</div>
-				<div className='info'>
-				</div>
+
+
+
 			</div>
 		)
 	}

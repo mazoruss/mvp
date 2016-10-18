@@ -50,7 +50,7 @@ body {
 }
 
 .leftButtons {
-	position:relative ;
+	position:relative;
 	top: 130px;
 	float: left;
 	margin-left: 60px;
@@ -65,25 +65,46 @@ body {
 	margin-right: 60px;
 	color: white;
 	font-size: 20px;
-	width:80px;
 }
 
-.wallet {
-	color: white;
+.bets * {
+	color: green;
 	font-size: 20px;
-	float: right;
+	
 }
 
-.bet {
-	color: white;
+.bets {
 	float: right;
+	margin-top: 10px;
 }
 
 .allBets * {
+	text-align: center;
+	vertical-align: middle;
+	line-height: 40px;
+	width: 40px;
+	height: 40px;
 	color: white;
 	margin: 15px;
 	float: left;
-	border-width: 10px;
+	font-size: 20px;
+	border-width: 3px;
 	border-color: white;
-	border-radius: 5px;
+	border-radius: 40px;
+	border-style: solid;
+}
+
+.allBets {
+	float: left;
+}
+
+.info * {
+	position: absolute;
+	left: 800px;
+	color: white;
+	height: 0px;
+}
+
+.count {
+	top: 30px;
 }

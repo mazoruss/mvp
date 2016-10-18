@@ -7,6 +7,7 @@ class App extends React.Component {
 		this.state.money = Number(props.money);
 	}
 
+	//player draws
 	hitMe() {
 		// if game is over, hit me does nothing
 		if(this.state.busted || this.state.reveal || this.state.dealerCards.length === 0) { return; }
@@ -20,38 +21,35 @@ class App extends React.Component {
 		}
 	}
 
+	//keep, or deal
 	keep() {
-		// if game is over, the keep button becomes deal!
 		if (this.state.reveal || this.state.playerCards.length === 0) {
 			this.start(true);
 		} else {
-			//ends the round by revealing the face down card
 			this.setState({reveal: true});
-			//animate to slow down the dealer's animation
 			let animate = [];
 			let cards = this.state.dealerCards.slice();
-			//dealer draws when points is below 17
+
 			while(points(cards) < 17) {
 				cards.push(this.state.deck.draw());
 				let hand = cards.slice();
 				animate.push(() => this.setState({ dealerCards: hand }));
 			}
-			//if dealer busts, or points is less than player, player wins
+
 			if (points(cards) > 21 || points(cards) < points(this.state.playerCards)) {
 				animate.push( () => this.setState({winner: 'PLAYER', money: this.state.money + this.state.bet}) );
 			} else {
-			//otherwise dealer wins
 				animate.push( () => this.setState({winner: 'DEALER', money: this.state.money - this.state.bet}) );
 			}
 
 			animate.push(this.needShuffle.bind(this));
-			//animate for dealer
 			animate.forEach((func, i) => {
 				setTimeout(func, (i + 1) * 500);
 			})
 		}
 	}
 
+	//checks if deck has less than 10 cards, if so, shuffle
 	needShuffle() {
 		if (this.state.deck.cardsLeft() < 10) {
 			this.reset();
@@ -82,18 +80,22 @@ class App extends React.Component {
 		}
 	}
 
+	//if starting hand is blackjack, auto win, pay 1.5x
 	checkBlackJack() {
 		if (points(this.state.playerCards) === 21) {
 			this.setState({winner: 'PLAYER', money: this.state.money + (this.state.bet * 1.5), reveal: true});
 		}
 	}
 
+	// updates betting amount 
 	updateBet(amount) {
 		if(this.state.reveal || this.state.playerCards.length === 0) {
-			this.setState({
-				bet: amount
-			});
+			this.setState({ bet: amount });
 		}
+	}
+
+	display(info) {
+		this.setState({display: info});
 	}
 
 	render() {
@@ -102,6 +104,17 @@ class App extends React.Component {
 				<div className='info'>
 					<div className='cardsLeft'> Cards left: {this.state.deck.cardsLeft()}</div>
 					<div className='count'> The Count: {this.state.deck.count()}</div>
+				</div>
+
+				<div className='display'>
+					<div onClick={() => this.display('why')}>Why it works</div>
+					<div onClick={() => this.display('counting')}>How to count</div>
+					<div onClick={() => this.display('edge')}>The edge</div>
+					<div onClick={() => this.display('none')} className='hide'>Hide</div>
+				</div>
+
+				<div className='howTo'>
+					{this.state.display === 'none' ? null : <HowTo info={this.state.display}/>}
 				</div>
 
 				<div className='game'>
@@ -114,10 +127,6 @@ class App extends React.Component {
 						<Player cards={this.state.playerCards} />
 						<Result bust={this.state.busted} winner={this.state.winner} />
 
-						<div className='leftButtons'>
-							<span onClick={this.reset.bind(this)}>Shuffle</span>
-						</div>
-
 						<div className='rightButtons'>
 							<span onClick={this.hitMe.bind(this)}>Hit Me</span> <br/>
 							<span onClick={this.keep.bind(this)}>
@@ -129,7 +138,6 @@ class App extends React.Component {
 					<div className='bets'>
 						<span className='bet'>Bet: ${this.state.bet}</span> <br />
 						<span className='wallet'>Wallet: ${this.state.money} </span>
-						
 					</div>
 
 					<div className='allBets'>
@@ -142,9 +150,6 @@ class App extends React.Component {
 						<div className='bet200' onClick={() => this.updateBet(200)}>200</div>
 					</div>
 				</div>
-
-
-
 			</div>
 		)
 	}

@@ -27,3 +27,13 @@ var Result = ({bust, winner}) => (
 		<span>{bust ? 'BUSTED' : winner ? winner + ' WINS!' : ''}</span>
 	</div>
 )
+
+var HowTo = ({info}) => (
+	<div className='wall'>
+	{info === 'why' ? 
+		whyItWorks : info === 'counting' ?
+		howTo : info === 'edge' ? 
+		theEdge : null
+	}
+	</div>
+)

@@ -44,11 +44,17 @@ class App extends React.Component {
 				animate.push( () => this.setState({winner: 'DEALER', money: this.state.money - this.state.bet}) );
 			}
 
-
+			animate.push(this.needShuffle.bind(this));
 			//animate for dealer
 			animate.forEach((func, i) => {
 				setTimeout(func, (i + 1) * 500);
 			})
+		}
+	}
+
+	needShuffle() {
+		if (this.state.deck.cardsLeft() < 10) {
+			this.reset();
 		}
 	}
 

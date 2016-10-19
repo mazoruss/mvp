@@ -37,3 +37,19 @@ var HowTo = ({info}) => (
 	}
 	</div>
 )
+
+var Footer = ({cb}) => (
+	<div className='footer'>
+    <span>
+      <label for="username">Username:</label>
+      <input id="username" type="text" name="username" />
+    </span>
+    <span>
+      <label for="password">Password:</label>
+      <input id="password" type="password" name="password" />
+    </span>
+    <span>
+      <button onClick={() => userlogin(cb)}>Log In</button>
+    </span>
+	</div>
+)

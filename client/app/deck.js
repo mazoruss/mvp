@@ -49,5 +49,5 @@ Deck.prototype.count = function() {
 }
 
 Deck.prototype.percentage = function() {
-  return 49.5 + (this.count() * 0.5);
+  return 49.75 + (this.count() * 0.25);
 }

@@ -17,7 +17,13 @@ class App extends React.Component {
 		this.setState({ playerCards: cards });
 		// if player busted, set game state to game over
 		if (isBust(cards)) { 
-			this.setState({ busted: true, reveal: true, money: this.state.money - this.state.bet });
+			if (this.state.username === 'guest') { 
+				this.setState({ busted: true, reveal: true, money: this.state.money - this.state.bet });
+			}
+			else {
+				this.setState({ busted: true, reveal: true});
+				changeMoney(this.state.username, this.state.money - this.state.bet, this.updateUser.bind(this));
+			}
 		}
 	}
 
@@ -37,9 +43,21 @@ class App extends React.Component {
 			}
 
 			if (points(cards) > 21 || points(cards) < points(this.state.playerCards)) {
-				animate.push( () => this.setState({winner: 'PLAYER', money: this.state.money + this.state.bet}) );
+				if (this.state.username === 'guest') {
+					animate.push( () => this.setState({winner: 'PLAYER', money: this.state.money + this.state.bet}) );
+				}
+				else {
+					animate.push( () => this.setState({winner: 'PLAYER'}));
+					changeMoney(this.state.username, this.state.money + this.state.bet, this.updateUser.bind(this));
+				}
 			} else {
-				animate.push( () => this.setState({winner: 'DEALER', money: this.state.money - this.state.bet}) );
+				if (this.state.username === 'guest') {
+					animate.push( () => this.setState({winner: 'DEALER', money: this.state.money - this.state.bet}) );
+				}
+				else {
+					animate.push( () => this.setState({winner: 'DEALER'}));
+					changeMoney(this.state.username, this.state.money - this.state.bet, this.updateUser.bind(this));
+				}
 			}
 
 			animate.push(this.needShuffle.bind(this));
@@ -83,7 +101,13 @@ class App extends React.Component {
 	//if starting hand is blackjack, auto win, pay 1.5x
 	checkBlackJack() {
 		if (points(this.state.playerCards) === 21) {
-			this.setState({winner: 'PLAYER', money: this.state.money + (this.state.bet * 1.5), reveal: true});
+			if (this.state.username === 'guest') { 
+				this.setState({winner: 'PLAYER', money: this.state.money + (this.state.bet * 1.5), reveal: true});
+			}
+			else {
+				this.setState({winner: 'PLAYER', reveal: true});
+				changeMoney(this.state.username, this.state.money + (this.state.bet * 1.5), this.updateUser.bind(this));
+			}
 		}
 	}
 
@@ -96,6 +120,13 @@ class App extends React.Component {
 
 	display(info) {
 		this.setState({display: info});
+	}
+
+	updateUser({username, money}) {
+		this.setState({
+			username: username,
+			money: money
+		});
 	}
 
 	render() {
@@ -151,6 +182,8 @@ class App extends React.Component {
 						<div className='bet200' onClick={() => this.updateBet(200)}>200</div>
 					</div>
 				</div>
+
+				<Footer cb={this.updateUser.bind(this)}/>
 			</div>
 		)
 	}

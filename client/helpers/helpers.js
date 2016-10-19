@@ -42,8 +42,58 @@ var defaultState = function() {
 	var deck = new Deck();
 	return { deck: deck, playerCards: [], dealerCards: [],
 					 busted: false, reveal: false, winner: '',
-					 bet: 5, display: 'none' };
+					 bet: 5, display: 'none', username: 'guest' };
 }
+
+
+var changeMoney = function(username, amount, updateUser) {
+	$.ajax({
+		url: 'http://localhost:5000',
+		type: 'POST',
+		data: {
+			username: username,
+			money: amount,
+			action: 'changeMoney'
+		},
+		success: function(data) {
+			updateUser(data);
+		}
+	})
+}
+
+var userlogin = function(updateUser) {
+	var username = $('#username').val();
+	var password = $('#password').val();
+	$('#username').val('');
+	$('#password').val('');
+	console.log(username);
+	$.ajax({
+		url: 'http://localhost:5000',
+		type: 'POST',
+		data: {username: username,
+					 password: password},
+		success: function(data) {
+			updateUser(data);
+		}
+	});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var whyItWorks = 'When there is a higher concentration of tens and aces left in the shoe, the player is going to be dealt more blackjacks (which pay 150% of your bet) and the dealer is going to bust (go over 21) more often. Conversely, when there are more small cards remaining, the player gets fewer blackjacks and the dealer is much less likely to bust. Given those mathematical realities, if a card counter keeps careful track of the concentration of high cards vs low cards, they can place bigger bets when there are more high cards left and smaller bets when there are more low cards left. While this concept is simple to understand it takes a lot of practice and hard work to make it happen in real life.';
 var theEdge = 'The true count will tell us what our advantage is at any point in a multiple deck blackjack game. To calculate our True Count, we simply divide our Running Count by the number of decks left to be dealt. In a standard 6 deck blackjack game each true count will move the house edge half a percent toward the player’s advantage. So a true 1 would basically erase the house edge and blackjack would be an even game. A true 2 puts the player advantage up to about half of 1 percent and the house edge becomes the player’s edge. A true 3 would make a player advantage of about 1% and so on. This can vary greatly depending on the rules and how many cards get dealt before the shuffle.';

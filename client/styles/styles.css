@@ -16,6 +16,7 @@ div {
 	background-image: url('../cards/table.png');
 	height: 461px;
 	width: 917px;
+	overflow-x: hidden;
 }
 
 .titleImage {
@@ -55,22 +56,15 @@ div {
 	height: 50px;
 }
 
-.leftButtons {
-	position:relative;
-	top: 130px;
-	float: left;
-	margin-left: 60px;
-	color: white;
-	font-size: 20px;
-}
-
 .rightButtons {
 	position:relative;
-	top: 130px;
+	top: 120px;
 	float: right;
-	margin-right: 30px;
+	margin-right: 20px;
 	color: white;
-	font-size: 40px;
+	font-size: 35px;
+	font-weight: bold;
+	font-family: arial;
 }
 
 .bets * {
@@ -134,7 +128,6 @@ div {
 	border-width: 2px;
 	border-color: white;
 	border-style: solid;
-	/*display: none;*/
 }
 
 .display{
@@ -148,4 +141,20 @@ div {
 	left: 200px;
 	top: 8px;
 	font-size: 30px;
+}
+
+.footer {
+	position: absolute;
+	bottom: 30px;
+	left: 30px;
+	color: white;
+}
+
+.footer * {
+	margin-right: 10px;
+}
+
+input {
+	background-color: black;
+	color: white;
 }
